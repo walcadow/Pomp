@@ -59,7 +59,14 @@ if errorlevel 1 goto hata
 goto bitti
 
 :gonder
-echo [5/5] Degisiklikler GitHub'a gonderiliyor...
+echo [5/5] GitHub'daki degisiklikler alinip birlestiriliyor...
+git fetch origin
+git rev-parse --verify origin/main >nul 2>&1
+if errorlevel 1 goto push_et
+git merge origin/main --allow-unrelated-histories --no-edit -X ours
+if errorlevel 1 goto hata
+:push_et
+echo Degisiklikler GitHub'a gonderiliyor...
 git push -u origin main
 if errorlevel 1 goto hata
 
