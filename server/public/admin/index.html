@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Pomp Yönetim</title>
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+  <!-- Yükleniyor -->
+  <div id="boot" class="center-screen"><div class="spinner" aria-label="Yükleniyor"></div></div>
+
+  <!-- Panel kapalı -->
+  <section id="disabled-view" class="center-screen" hidden>
+    <div class="auth-card">
+      <div class="brand brand-lg"><span class="brand-mark">P</span><span>Pomp Yönetim</span></div>
+      <div class="notice">
+        <strong>Yönetici paneli kapalı</strong>
+        <p>.env dosyasına <code>ADMIN_PASSWORD</code> ekleyin ve sunucuyu yeniden başlatın.</p>
+        <p class="muted small">Örnek: <code>ADMIN_PASSWORD=uzun-ve-gizli-bir-sifre</code></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Giriş -->
+  <section id="login-view" class="center-screen" hidden>
+    <form id="login-form" class="auth-card" autocomplete="off">
+      <div class="brand brand-lg"><span class="brand-mark">P</span><span>Pomp Yönetim</span></div>
+      <p class="muted">Devam etmek için yönetici şifresini girin.</p>
+      <label class="field">
+        <span>Şifre</span>
+        <input id="login-password" type="password" autocomplete="current-password" required>
+      </label>
+      <div id="login-error" class="form-error" role="alert" hidden></div>
+      <button id="login-btn" class="btn btn-primary btn-block" type="submit">Giriş yap</button>
+    </form>
+  </section>
+
+  <!-- Panel -->
+  <div id="app-view" hidden>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand"><span class="brand-mark">P</span><span>Pomp Yönetim</span></div>
+        <div class="topbar-actions">
+          <button id="refresh-btn" class="btn btn-ghost-light" type="button" title="Yenile">Yenile</button>
+          <button id="logout-btn" class="btn btn-ghost-light" type="button">Çıkış</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section id="stats" class="stats" aria-label="İstatistikler"></section>
+
+      <nav class="tabs" role="tablist">
+        <button class="tab active" type="button" role="tab" data-tab="reports">Şikâyetler <span id="tab-badge" class="tab-badge" hidden></span></button>
+        <button class="tab" type="button" role="tab" data-tab="users">Kullanıcılar</button>
+      </nav>
+
+      <!-- Şikâyetler -->
+      <section id="reports-panel" class="panel">
+        <div class="toolbar">
+          <div class="segmented" id="report-filter">
+            <button type="button" class="seg active" data-status="open">Açık</button>
+            <button type="button" class="seg" data-status="resolved">Sonuçlanan</button>
+            <button type="button" class="seg" data-status="all">Tümü</button>
+          </div>
+        </div>
+        <div id="reports-list" class="report-list"></div>
+      </section>
+
+      <!-- Kullanıcılar -->
+      <section id="users-panel" class="panel" hidden>
+        <form id="user-search" class="toolbar toolbar-search">
+          <input id="user-q" type="search" placeholder="İsim veya e-posta ara…" aria-label="Ara">
+          <select id="user-filter" aria-label="Filtre">
+            <option value="all">Tümü</option>
+            <option value="real">Gerçek kullanıcılar</option>
+            <option value="demo">Demo profiller</option>
+            <option value="banned">Yasaklılar</option>
+            <option value="reported">Şikâyet edilenler</option>
+          </select>
+          <button class="btn btn-primary" type="submit">Ara</button>
+        </form>
+        <div class="card table-card">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>Kullanıcı</th>
+                <th>Durum</th>
+                <th class="col-num col-hide-sm">Fotoğraf</th>
+                <th class="col-num">Şikâyet</th>
+                <th class="col-hide-sm">Kayıt</th>
+                <th class="col-hide-sm">Son aktif</th>
+              </tr>
+            </thead>
+            <tbody id="users-body"></tbody>
+          </table>
+          <div id="users-empty" class="empty" hidden></div>
+        </div>
+        <div class="pager">
+          <span id="pager-info" class="muted small"></span>
+          <div class="pager-btns">
+            <button id="prev-page" class="btn btn-secondary" type="button">‹ Önceki</button>
+            <button id="next-page" class="btn btn-secondary" type="button">Sonraki ›</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Kullanıcı detayı -->
+  <div id="drawer" class="drawer" hidden>
+    <div class="drawer-backdrop" data-close></div>
+    <aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      <div class="drawer-head">
+        <h2 id="drawer-title">Kullanıcı</h2>
+        <button class="icon-btn" type="button" data-close aria-label="Kapat">✕</button>
+      </div>
+      <div id="drawer-body" class="drawer-body"></div>
+    </aside>
+  </div>
+
+  <!-- Onay penceresi -->
+  <div id="confirm" class="modal" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-card" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title">
+      <h3 id="confirm-title"></h3>
+      <p id="confirm-text" class="muted"></p>
+      <label id="confirm-note-wrap" class="field" hidden>
+        <span id="confirm-note-label">Not (isteğe bağlı)</span>
+        <textarea id="confirm-note" rows="3" maxlength="500"></textarea>
+      </label>
+      <div class="modal-actions">
+        <button id="confirm-cancel" class="btn btn-secondary" type="button">Vazgeç</button>
+        <button id="confirm-ok" class="btn btn-danger" type="button">Onayla</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="/admin/admin.js"></script>
+</body>
+</html>

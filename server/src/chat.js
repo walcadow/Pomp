@@ -2,6 +2,7 @@
 const db = require('./db');
 const { HttpError } = require('./util');
 const realtime = require('./realtime');
+const push = require('./push');
 
 const MAX_LEN = 2000;
 
@@ -41,8 +42,22 @@ async function sendMessage(userId, matchId, rawBody) {
   const message = toMessage(rows[0]);
   realtime.emitToUser(match.other, 'message:new', message);
   realtime.emitToUser(userId, 'message:new', message); // kullanıcının diğer cihazları için
+  notifyNewMessage(userId, match, body);
   maybeDemoReply(match, userId);
   return message;
+}
+
+// Uygulama kapalıyken de haberi olsun diye karşı tarafa anlık bildirim gönderir (beklenmez, hata vermez).
+function notifyNewMessage(senderId, match, body) {
+  (async () => {
+    const { rows } = await db.query('SELECT name FROM users WHERE id = $1', [senderId]);
+    const preview = body.length > 100 ? `${body.slice(0, 100)}…` : body;
+    await push.notifyUser(match.other, {
+      title: rows[0] ? rows[0].name : 'Yeni mesaj',
+      body: preview,
+      data: { type: 'message', matchId: match.id },
+    });
+  })().catch((err) => console.warn('Mesaj bildirimi gönderilemedi:', err.message));
 }
 
 // Demo kullanıcılar, sohbeti deneyebilmeniz için kısa bir süre sonra otomatik cevap verir.

@@ -40,6 +40,7 @@ function ownProfile(row, photos) {
     maxAge: row.max_age,
     maxDistanceKm: row.max_distance_km,
     hasLocation: row.lat != null && row.lng != null,
+    emailVerified: row.email_verified === true,
     distanceKm: null,
   };
 }

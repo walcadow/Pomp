@@ -79,7 +79,7 @@ PowerShell'de **mobile** klasörüne geçin ve şu komutları tek tek çalışt�
 
 ```powershell
 cd $HOME\Desktop\POMP\mobile
-flutter create --org com.pomp --project-name pomp --platforms android,ios .
+flutter create --org com.walcadow --project-name pomp --platforms android,ios .
 flutter pub get
 ```
 

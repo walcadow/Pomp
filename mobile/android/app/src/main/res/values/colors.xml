@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Pomp marka renkleri -->
+    <color name="pomp_purple">#6C4CF1</color>
+    <color name="pomp_coral">#FF5A79</color>
+    <color name="splash_background">#6C4CF1</color>
+</resources>

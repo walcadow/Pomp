@@ -2,10 +2,17 @@ plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    // Anlık bildirimler (Firebase): aşağıda yalnızca google-services.json varsa etkinleştirilir.
+    id("com.google.gms.google-services") apply false
+}
+
+// google-services.json yoksa (Firebase henüz ayarlanmadıysa) uygulama bildirimler olmadan derlenir.
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.pomp.pomp"
+    namespace = "com.walcadow.pomp"
     compileSdk = flutter.compileSdkVersion
     // Bilgisayarda kurulu olan NDK sürümü (Android Studio > SDK Manager > SDK Tools > NDK)
     ndkVersion = "30.0.16248370"
@@ -13,11 +20,13 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        // flutter_local_notifications (bildirimler) için gerekli
+        isCoreLibraryDesugaringEnabled = true
     }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.pomp.pomp"
+        applicationId = "com.walcadow.pomp"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
@@ -47,4 +56,9 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // flutter_local_notifications (bildirimler) için gerekli
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

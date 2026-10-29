@@ -24,10 +24,15 @@ async function requireAuth(req, res, next) {
     return res.status(401).json({ error: 'Oturumunuzun süresi doldu, tekrar giriş yapın.' });
   }
 
-  const { rows } = await db.query(
-    'UPDATE users SET last_active_at = now() WHERE id = $1 RETURNING id, is_banned',
-    [userId]
-  );
+  let rows;
+  try {
+    ({ rows } = await db.query(
+      'UPDATE users SET last_active_at = now() WHERE id = $1 RETURNING id, is_banned',
+      [userId]
+    ));
+  } catch (err) {
+    return next(err); // veritabanı hatası sunucuyu çökertmesin
+  }
   if (!rows[0]) return res.status(401).json({ error: 'Hesap bulunamadı.' });
   if (rows[0].is_banned) return res.status(403).json({ error: 'Hesabınız askıya alınmış.' });
 

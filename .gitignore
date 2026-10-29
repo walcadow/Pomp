@@ -11,8 +11,13 @@ mobile/build/
 mobile/.dart_tool/
 server/node_modules/
 server/uploads/
+# Firebase sunucu anahtarı (bildirimler) - gizli
+server/firebase-service-account.json
 
 # Editor dosyalari
 .idea/
 *.iml
 .vscode/
+
+# Silinmeyi bekleyen eski dosyalar
+_to_delete/

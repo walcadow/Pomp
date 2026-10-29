@@ -32,6 +32,17 @@ services:
       PUBLIC_URL: ${PUBLIC_URL:-}
       UPLOAD_DIR: /app/uploads
       NODE_ENV: ${NODE_ENV:-development}
+      # Yönetici paneli şifresi (http://localhost:3000/admin). Boşsa panel kapalıdır.
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      # E-posta gönderimi (EPOSTA_KURULUM.md). SMTP_HOST boşsa e-postalar /dev/emails sayfasında görünür.
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      # Push bildirimleri (PUSH_KURULUM.md). Dosya yoksa bildirimler kapalıdır.
+      FIREBASE_SERVICE_ACCOUNT_FILE: /app/firebase-service-account.json
     volumes:
       - uploads:/app/uploads
     ports:

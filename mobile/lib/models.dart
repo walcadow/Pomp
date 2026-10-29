@@ -25,6 +25,7 @@ class UserProfile {
   final int maxAge;
   final int maxDistanceKm;
   final bool hasLocation;
+  final bool emailVerified;
 
   const UserProfile({
     required this.id,
@@ -42,6 +43,7 @@ class UserProfile {
     this.maxAge = 99,
     this.maxDistanceKm = 50,
     this.hasLocation = false,
+    this.emailVerified = false,
   });
 
   String? get firstPhoto => photos.isEmpty ? null : photos.first.url;
@@ -64,6 +66,7 @@ class UserProfile {
         maxAge: (j['maxAge'] as num?)?.toInt() ?? 99,
         maxDistanceKm: (j['maxDistanceKm'] as num?)?.toInt() ?? 50,
         hasLocation: j['hasLocation'] == true,
+        emailVerified: j['emailVerified'] == true,
       );
 }
 

@@ -1,6 +1,7 @@
 // Anlık bağlantı (Socket.io): yeni mesaj, yeni eşleşme, "yazıyor..." bildirimleri.
 const { Server } = require('socket.io');
 const { verifyToken } = require('./auth');
+const db = require('./db');
 
 let io = null;
 
@@ -8,10 +9,17 @@ function init(httpServer) {
   io = new Server(httpServer, { cors: { origin: '*' } });
 
   // Bağlanan herkes geçerli bir giriş anahtarı (token) göndermeli.
-  io.use((socket, next) => {
+  io.use(async (socket, next) => {
     const token = socket.handshake.auth && socket.handshake.auth.token;
     try {
       socket.userId = verifyToken(token);
+    } catch {
+      return next(new Error('unauthorized'));
+    }
+    // Yasaklanan (veya silinen) hesaplar yeniden bağlanamasın.
+    try {
+      const { rows } = await db.query('SELECT is_banned FROM users WHERE id = $1', [socket.userId]);
+      if (!rows[0] || rows[0].is_banned) return next(new Error('unauthorized'));
       next();
     } catch {
       next(new Error('unauthorized'));

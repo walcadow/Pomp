@@ -7,6 +7,7 @@ import '../config.dart';
 import '../models.dart';
 import '../session.dart';
 import '../theme.dart';
+import 'password_screens.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -111,7 +112,17 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 28),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ForgotPasswordScreen(initialEmail: _email.text.trim())),
+              ),
+              child: const Text('Şifremi unuttum'),
+            ),
+          ),
+          const SizedBox(height: 16),
           FilledButton(
             onPressed: _busy ? null : _submit,
             child: _busy

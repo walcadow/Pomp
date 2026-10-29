@@ -8,6 +8,7 @@ import '../session.dart';
 import '../theme.dart';
 import '../widgets/photo_grid.dart';
 import 'user_profile_screen.dart';
+import 'verify_email_screen.dart';
 
 const suggestedInterests = [
   'Kahve', 'Kitap', 'Sinema', 'Dizi', 'Müzik', 'Konser', 'Seyahat', 'Yemek', 'Fotoğraf', 'Sanat',
@@ -35,6 +36,7 @@ class ProfileScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [
+          const VerifyEmailBanner(),
           Center(
             child: Container(
               padding: const EdgeInsets.all(3),

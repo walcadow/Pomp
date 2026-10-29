@@ -1,4 +1,4 @@
-package com.pomp.pomp
+package com.walcadow.pomp
 
 import io.flutter.embedding.android.FlutterActivity
 

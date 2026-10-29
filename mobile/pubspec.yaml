@@ -16,6 +16,10 @@ dependencies:
   geolocator: ^14.0.1
   image_picker: ^1.1.2
   url_launcher: ^6.3.1
+  # Anlık bildirimler (Firebase ayarlanmamışsa sessizce kapalı kalır)
+  firebase_core: ^4.15.0
+  firebase_messaging: ^16.7.0
+  flutter_local_notifications: ^22.1.0
 
 dev_dependencies:
   flutter_test:

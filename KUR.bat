@@ -20,7 +20,7 @@ call flutter --disable-analytics >> "%LOG%" 2>&1
 call flutter --version >> "%LOG%" 2>&1 || goto hata
 
 echo [2/4] Android ve iOS proje dosyalari olusturuluyor...
-call flutter create --org com.pomp --project-name pomp --platforms android,ios . >> "%LOG%" 2>&1 || goto hata
+call flutter create --org com.walcadow --project-name pomp --platforms android,ios . >> "%LOG%" 2>&1 || goto hata
 
 echo [3/4] Uygulamanin paketleri indiriliyor...
 call flutter pub get >> "%LOG%" 2>&1 || goto hata

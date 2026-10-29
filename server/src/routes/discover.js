@@ -6,6 +6,7 @@ const { requireAuth } = require('../auth');
 const { wrap, HttpError, parse } = require('../util');
 const { photosFor, publicProfile } = require('../profiles');
 const realtime = require('../realtime');
+const push = require('../push');
 
 const router = express.Router();
 router.use(requireAuth);
@@ -107,7 +108,15 @@ router.post('/swipes', wrap(async (req, res) => {
   const forMe = { id: match.id, createdAt: match.created_at, user: byId[targetId], lastMessage: null, unread: 0 };
   const forThem = { id: match.id, createdAt: match.created_at, user: byId[req.userId], lastMessage: null, unread: 0 };
 
-  if (inserted.rowCount) realtime.emitToUser(targetId, 'match:new', forThem);
+  if (inserted.rowCount) {
+    realtime.emitToUser(targetId, 'match:new', forThem);
+    // Karşı tarafa anlık bildirim (beklenmez, hata vermez).
+    push.notifyUser(targetId, {
+      title: 'Yeni eşleşme! 🎉',
+      body: `${(users.find((u) => u.id === req.userId) || {}).name || 'Biri'} ile eşleştin`,
+      data: { type: 'match', matchId: match.id },
+    });
+  }
   res.json({ matched: true, match: forMe });
 }));
 

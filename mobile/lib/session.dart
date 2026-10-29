@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api.dart';
 import 'models.dart';
+import 'push.dart';
 import 'realtime.dart';
 
 enum SessionStatus { loading, loggedOut, loggedIn, offline }
@@ -17,6 +18,7 @@ class Session extends ChangeNotifier {
 
   final Api api = Api();
   final Realtime realtime = Realtime();
+  final PushService push = PushService();
 
   SessionStatus status = SessionStatus.loading;
   UserProfile? me;
@@ -72,6 +74,14 @@ class Session extends ChangeNotifier {
     _startSession(token);
   }
 
+  /// Şifre sıfırlama kodu ile yeni şifre belirler ve giriş yapar.
+  Future<void> resetPassword(String email, String code, String password) async {
+    final (token, user) = await api.resetPassword(email, code, password);
+    await _saveToken(token);
+    me = user;
+    _startSession(token);
+  }
+
   Future<void> _saveToken(String token) async {
     api.token = token;
     final prefs = await SharedPreferences.getInstance();
@@ -86,9 +96,13 @@ class Session extends ChangeNotifier {
     loadMatches();
     // Test sürümünde profil tamamlama ekranı atlandığı için konumu otomatik al.
     if (kDebugMode && me != null && !me!.hasLocation) updateLocation();
+    // Bildirimler (Firebase ayarlı değilse sessizce kapalı kalır).
+    // Açık olan sohbetten gelen mesaj için bildirim gösterme.
+    push.start(api, shouldShow: (type, matchId) => matchId == null || matchId != openChatMatchId);
   }
 
   Future<void> logout() async {
+    await push.stop(api);
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_tokenKey);
     for (final s in _subs) {

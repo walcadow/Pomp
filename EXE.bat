@@ -7,7 +7,7 @@ cd /d "%~dp0mobile"
 echo Pomp exe kaydi > "%LOG%"
 
 if exist "windows\runner" goto derle
-call flutter create --org com.pomp --project-name pomp --platforms windows . >> "%LOG%" 2>&1
+call flutter create --org com.walcadow --project-name pomp --platforms windows . >> "%LOG%" 2>&1
 if errorlevel 1 goto hata
 
 :derle

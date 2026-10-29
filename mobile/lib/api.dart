@@ -73,10 +73,23 @@ class Api {
     return (j['token'] as String, UserProfile.fromJson(Map<String, dynamic>.from(j['user'] as Map)));
   }
 
+  // ---- Şifre sıfırlama & e-posta doğrulama ----
+  Future<void> forgotPassword(String email) => post('/auth/forgot', {'email': email});
+
+  Future<(String, UserProfile)> resetPassword(String email, String code, String password) async {
+    final j = await post('/auth/reset', {'email': email, 'code': code, 'password': password});
+    return (j['token'] as String, UserProfile.fromJson(Map<String, dynamic>.from(j['user'] as Map)));
+  }
+
+  Future<void> sendVerification() => post('/auth/verify/send');
+
+  Future<UserProfile> verifyEmail(String code) async =>
+      UserProfile.fromJson(Map<String, dynamic>.from(await post('/auth/verify', {'code': code}) as Map));
+
   // ---- Profil ----
   Future<UserProfile> me() async => UserProfile.fromJson(Map<String, dynamic>.from(await get('/me') as Map));
 
-  Future<UserProfile> updateMe(Map<String, dynamic> data) async =>github
+  Future<UserProfile> updateMe(Map<String, dynamic> data) async =>
       UserProfile.fromJson(Map<String, dynamic>.from(await patch('/me', data) as Map));
 
   Future<void> updateLocation(double lat, double lng) => put('/me/location', {'lat': lat, 'lng': lng});

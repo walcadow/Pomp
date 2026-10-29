@@ -21,9 +21,14 @@ app.get('/health', (req, res) => res.json({ ok: true }));
 
 app.use('/auth', require('./routes/auth'));
 app.use('/me', require('./routes/me'));
-app.use('/', require('./routes/discover'));
 app.use('/matches', require('./routes/matches'));
 app.use('/users', require('./routes/users'));
+app.use('/push', require('./routes/push'));
+app.use('/admin', require('./routes/admin'));
+// Geliştirme ortamında gönderilen e-postaları gösteren sayfa: /dev/emails
+app.use('/dev', require('./routes/devmail'));
+// Bu yönlendirici tüm isteklere giriş şartı koyduğu için en sona eklenmeli.
+app.use('/', require('./routes/discover'));
 
 app.use((req, res) => res.status(404).json({ error: 'Bulunamadı.' }));
 

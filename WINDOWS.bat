@@ -8,7 +8,7 @@ echo Pomp windows kaydi > "%LOG%"
 
 if exist "windows\runner" goto calistir
 echo [1/2] Windows proje dosyalari olusturuluyor...
-call flutter create --org com.pomp --project-name pomp --platforms windows . >> "%LOG%" 2>&1
+call flutter create --org com.walcadow --project-name pomp --platforms windows . >> "%LOG%" 2>&1
 if errorlevel 1 goto hata
 
 :calistir
