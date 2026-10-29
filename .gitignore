@@ -1,0 +1,18 @@
+# Gizli ayarlar - asla GitHub'a gitmemeli
+.env
+
+# Kayit (log) dosyalari
+*_log.txt
+
+# Derleme ciktilari
+Pomp.apk
+Pomp_Windows/
+mobile/build/
+mobile/.dart_tool/
+server/node_modules/
+server/uploads/
+
+# Editor dosyalari
+.idea/
+*.iml
+.vscode/

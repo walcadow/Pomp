@@ -1,0 +1,42 @@
+# Pomp sunucusunu ve veritabanını tek komutla başlatır:
+#   docker compose up -d --build
+# Durdurmak için:
+#   docker compose down
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pomp
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-pomp}
+      POSTGRES_DB: pomp
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pomp"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: ./server
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://pomp:${DB_PASSWORD:-pomp}@db:5432/pomp
+      JWT_SECRET: ${JWT_SECRET:-gelistirme-icin-gizli-anahtar-uretimde-mutlaka-degistirin}
+      PUBLIC_URL: ${PUBLIC_URL:-}
+      UPLOAD_DIR: /app/uploads
+      NODE_ENV: ${NODE_ENV:-development}
+    volumes:
+      - uploads:/app/uploads
+    ports:
+      - "3000:3000"
+
+volumes:
+  dbdata:
+  uploads:
