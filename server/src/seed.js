@@ -1,5 +1,6 @@
 // Deneme için sahte (demo) kullanıcılar oluşturur.
 // Kullanım:  npm run seed
+//            npm run seed -- --sil              (tüm demo kullanıcıları siler)
 //            npm run seed -- --lat 40.99 --lng 29.02   (belirli bir konumun çevresine)
 // Konum verilmezse, uygulamadan en son giriş yapan gerçek kullanıcının çevresine yerleştirilir.
 // Demo kullanıcıların yarısı sizi önceden "beğenmiş" olur; sağa kaydırınca hemen eşleşirsiniz.
@@ -47,6 +48,12 @@ function birthdateForAge(age) {
 
 async function seed() {
   await migrate();
+
+  if (process.argv.includes('--sil')) {
+    const { rowCount } = await db.query('DELETE FROM users WHERE is_demo');
+    console.log(`${rowCount} demo kullanıcı silindi.`);
+    return;
+  }
 
   let lat = argValue('lat');
   let lng = argValue('lng');

@@ -1,5 +1,9 @@
 # E-posta kurulumu (doğrulama ve şifre sıfırlama kodları)
 
+> **Kısa yol (Oracle sunucusu):** Pomp klasöründe `EPOSTA.py` çalıştırın
+> (Mac: `python3 EPOSTA.py`, Windows: çift tıklayın). Gmail adresinizi ve Google'dan aldığınız
+> **uygulama şifresini** sorar, sunucuya yazar ve bir deneme e-postası gönderir.
+
 Pomp, kayıt olan kişiye **e-posta doğrulama kodu**, şifresini unutan kişiye de **şifre sıfırlama kodu** gönderir. Kodlar 6 hanelidir ve 15 dakika geçerlidir.
 
 ## 1. Denerken (geliştirme modu) — hiçbir ayar gerekmez
