@@ -2,17 +2,14 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'config.dart';
 import 'screens/home_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/welcome_screen.dart';
 import 'session.dart';
 import 'theme.dart';
-import 'widgets/server_settings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AppConfig.load(); // kaydedilmiş sunucu adresi
   runApp(
     ChangeNotifierProvider(
       create: (_) => Session()..init(),
@@ -60,13 +57,6 @@ class AuthGate extends StatelessWidget {
                   const Text('İnternet bağlantınızı ve sunucunun açık olduğunu kontrol edin.', textAlign: TextAlign.center),
                   const SizedBox(height: 24),
                   FilledButton(onPressed: session.init, child: const Text('Tekrar dene')),
-                  const SizedBox(height: 8),
-                  TextButton(
-                    onPressed: () async {
-                      if (await showServerSettings(context)) session.init();
-                    },
-                    child: const Text('Sunucu adresini değiştir'),
-                  ),
                 ],
               ),
             ),

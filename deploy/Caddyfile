@@ -1,0 +1,7 @@
+# Pomp - HTTPS ters vekil (reverse proxy).
+# SITE_ADDRESS ornegi: 129-146-12-34.sslip.io  (alan adi alinirsa: api.alanadiniz.com)
+# Caddy sertifikayi (Let's Encrypt) kendisi alir ve yeniler. WebSocket (sohbet) destegi otomatiktir.
+{$SITE_ADDRESS} {
+	encode gzip
+	reverse_proxy api:3000
+}

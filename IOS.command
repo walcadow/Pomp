@@ -27,12 +27,9 @@ flutter config --enable-swift-package-manager >>"$LOG" 2>&1
 flutter --version | tee -a "$LOG"
 
 echo
-IP="$(ipconfig getifaddr en0 2>/dev/null)"
-echo "Sunucu adresi (uygulamanin baglanacagi). Bos birakirsaniz http://$IP:3000 kullanilir."
-echo "Tunel kullaniyorsaniz https://...trycloudflare.com adresini yapistirin."
-read -t 30 -p "Adres (30 sn icinde yazmazsaniz varsayilan kullanilir): " URL; echo
-[ -z "$URL" ] && URL="http://$IP:3000"
+URL="$(grep -o "sunucuAdresi = '[^']*'" mobile/lib/config.dart | cut -d"'" -f2)"
 echo "Sunucu: $URL" | tee -a "$LOG"
+case "$URL" in *HENUZ-KURULMADI*) echo "UYARI: Sunucu henuz kurulmadi (once ORACLE_YUKLE.command)."; esac
 
 cd mobile
 echo "2/5 Paketler indiriliyor..."
@@ -40,7 +37,7 @@ flutter pub get >>"$LOG" 2>&1 || hata "flutter pub get basarisiz"
 echo "3/5 iOS dosyalari hazirlaniyor..."
 flutter precache --ios >>"$LOG" 2>&1
 echo "4/5 iOS derleniyor (5-15 dk)..."
-flutter build ios --release --no-codesign --dart-define=API_URL="$URL" >>"$LOG" 2>&1 || hata "flutter build ios basarisiz"
+flutter build ios --release --no-codesign >>"$LOG" 2>&1 || hata "flutter build ios basarisiz"
 echo "5/5 Xcode aciliyor..."
 open ios/Runner.xcworkspace
 echo

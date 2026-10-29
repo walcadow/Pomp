@@ -23,3 +23,6 @@ server/firebase-service-account.json
 _to_delete/
 tunel_adres.txt
 ios_log.txt
+sunucu_bilgileri.txt
+.DS_Store
+oracle_log.txt

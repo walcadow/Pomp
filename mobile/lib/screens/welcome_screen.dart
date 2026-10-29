@@ -7,7 +7,6 @@ import '../config.dart';
 import '../models.dart';
 import '../session.dart';
 import '../theme.dart';
-import '../widgets/server_settings.dart';
 import 'password_screens.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -45,11 +44,6 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginScreen())),
                   child: const Text('Giriş yap'),
-                ),
-                const SizedBox(height: 4),
-                TextButton(
-                  onPressed: () => showServerSettings(context),
-                  child: Text('Sunucu ayarı', style: TextStyle(color: Colors.white.withValues(alpha: 0.75))),
                 ),
               ],
             ),
