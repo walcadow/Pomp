@@ -76,7 +76,7 @@ class Api {
   // ---- Profil ----
   Future<UserProfile> me() async => UserProfile.fromJson(Map<String, dynamic>.from(await get('/me') as Map));
 
-  Future<UserProfile> updateMe(Map<String, dynamic> data) async =>
+  Future<UserProfile> updateMe(Map<String, dynamic> data) async =>github
       UserProfile.fromJson(Map<String, dynamic>.from(await patch('/me', data) as Map));
 
   Future<void> updateLocation(double lat, double lng) => put('/me/location', {'lat': lat, 'lng': lng});
