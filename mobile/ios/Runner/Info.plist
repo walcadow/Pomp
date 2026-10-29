@@ -66,5 +66,21 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Yakınındaki kişileri gösterebilmek için yaklaşık konumunu kullanıyoruz.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Profiline fotoğraf ekleyebilmen için galerine erişmemiz gerekiyor.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Profil fotoğrafı çekebilmen için kameraya erişmemiz gerekiyor.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<!-- Yalnızca geliştirme için: http:// sunucuya bağlanmaya izin verir. Yayında kaldırın. -->
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>
