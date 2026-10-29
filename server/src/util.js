@@ -22,7 +22,9 @@ function ageFromBirthdate(birthdate) {
 // Fotoğraf yollarını tam adrese çevirir (örn. /uploads/x.jpg -> http://sunucu/uploads/x.jpg).
 function photoUrl(req, url) {
   if (/^https?:\/\//.test(url)) return url;
-  const base = config.publicUrl || `${req.protocol}://${req.get('host')}`;
+  // Tünel veya ters vekil arkasında asıl adres X-Forwarded-Host başlığında gelir.
+  const host = req.get('x-forwarded-host') || req.get('host');
+  const base = config.publicUrl || `${req.protocol}://${host}`;
   return base + url;
 }
 

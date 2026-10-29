@@ -48,6 +48,16 @@ services:
     ports:
       - "3000:3000"
 
+  # Ücretsiz Cloudflare tüneli: sunucuyu geçici bir https://...trycloudflare.com adresinden internete açar.
+  # Yalnızca TUNEL.bat ile (profil: tunnel) çalışır; normal "docker compose up" ile başlamaz.
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    profiles: ["tunnel"]
+    restart: unless-stopped
+    depends_on:
+      - api
+    command: tunnel --no-autoupdate --url http://api:3000
+
 volumes:
   dbdata:
   uploads:
